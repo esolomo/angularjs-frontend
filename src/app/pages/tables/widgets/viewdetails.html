@@ -1,0 +1,47 @@
+<div class="add-row-editable-table">
+  <button ng-hide="!isSiteSelected" class="btn btn-primary" style="display:inline; float:right;" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addFTPUser.html')">Add FTP User</button>
+  <br ng-hide="!isSiteSelected"></br>
+  <br ng-hide="!isSiteSelected"></br>
+  <br ng-hide="!isSiteSelected"></br>
+</div>
+
+      
+<div  ng-hide="!isSiteSelected">
+    <table class="table table-bordered table-hover table-condensed">
+      <tr>
+        <td style="width:30%"><span class="pull-left">username</span></td>
+        <td style="width:40%">homedir</td>
+        <td style="width:20%">password</td>
+        <td style="width:10%" >Actions</td>
+      </tr>
+      <tr ng-repeat="data in ftp_data" class="editable-row">
+        <td style="width:10%">
+            <span class="pull-left" e-name="name" e-form="rowform" e-required>
+              {{ data.username || 'empty' }}
+            </span>
+        </td>
+        <td style="width:40%">
+            <a  href="#"  editable-text="data.homedir" onaftersave="updateHomedir(data.username,data.homedir)" >
+                    {{ data.homedir || 'empty' }}
+            </a>
+        </td>
+        <td style="width:40%">
+            <a  href="#"  type="hidden"  editable-text="ftp_password" ng-model=ftp_password onaftersave="updatePassword(data.username,ftp_password)" >
+                    {{ '**********' }}
+            </a>
+      </td>
+        <td style="width:10%">
+          <form editable-form name="rowform"  ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == domain">
+            <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeFTPUser(servername, data.username)">Delete</button>
+          </form>
+        </td>
+      </tr>
+    </table>
+</div>
+
+<div ng-hide="isSiteSelected" >
+    <button  class="btn btn-primary"   ng-click="gotoselectsite()" >Please select site first </button>    
+</div>
+      
+      
+        

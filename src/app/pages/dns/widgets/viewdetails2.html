@@ -1,0 +1,40 @@
+<div class="add-row-editable-table">
+        <button class="btn btn-primary" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addFTPUser.html')">Add FTP User</button>
+      </div>
+      
+      <div >
+      <table class="table table-bordered table-hover table-condensed">
+        <tr>
+          <td></td>
+          <td>host record</td>
+          <td>points to</td>
+          <td>Actions</td>
+        </tr>
+        <tr ng-repeat="zone in zone_a" class="editable-row">
+          <td>
+              {{$index}}
+          </td>
+          <td>
+              <span e-name="name" e-form="rowform" e-required>
+                {{ zone.name || 'empty' }}
+              </span>
+          </td>
+          <td >
+                <a  href="#"  editable-text="data.homedir" onaftersave="updateHomedir(data)" >
+                        {{ zone.destination || 'empty' }}
+                </a>
+          </td>
+          <td>
+            <form editable-form name="rowform" onbeforesave="saveDomain(domain.name, $data)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == domain">
+              <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary editable-table-button btn-xs" style="width:auto">
+                Update Password
+              </button>
+              <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeDomain($index)">Delete</button>
+            </form>
+          </td>
+        </tr>
+      </table>
+      </div>
+      
+      
+        
