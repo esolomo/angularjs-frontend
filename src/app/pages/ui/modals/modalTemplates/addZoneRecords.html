@@ -17,29 +17,44 @@
              <div class="form-group">
                             <label for="exampleInputFTPSite1">type </label> 
                             <select ng-model="type" ng-change="setTypeSelected(type)">
+                                    <option>ROOT_IPv4</option>
+                                    <option>ROOT_IPv6</option>
+                                    <option>NS</option>
+                                    <option>SOA</option>
                                     <option>A</option>
                                     <option>AAAA</option>
                                     <option>CNAME</option>
                                     <option>MX</option>
                                     <option>TXT</option>
+                                    <option>TTL</option>
                             </select>
              </div>
              <div  class="form-group">
                 <label for="exampleInputFTPSite1">zone </label> <input type="text" class="form-control" ng-model="zone"  placeholder="{{zone}}"/>
               </div>
-              <div class="form-group">
-                <label for="exampleInputUsername1">name </label> <input type="text" class="form-control" ng-model="name"  placeholder="name"/>
+
+              <div class="form-group" ng-hide="record_type == 'ROOT_IPv4'  || record_type == 'ROOT_IPv6' || record_type == 'TTL'  " >
+                    <label >name </label> <input type="text" class="form-control" ng-model="name"  placeholder="name"/>
               </div>
               <div class="form-group" ng-show="record_type == 'A' || record_type == 'AAAA' || record_type == 'CNAME' " >
-                    <label for="exampleInputHomedir1">destination </label> <input type="text" class="form-control" ng-model="value"  placeholder="destination"/>
+                    <label >destination </label> <input type="text" class="form-control" ng-model="value"  placeholder="destination"/>
+              </div>
+              <div class="form-group" ng-show="record_type == 'TTL' || record_type == 'A'  || record_type == 'CNAME' || record_type == 'AAAA' " >
+                    <label >ttl </label> <input type="text" class="form-control" ng-model="ttl"  placeholder="ttl"/>
               </div>
               <div class="form-group" ng-show="record_type == 'MX'" >
-                    <label for="exampleInputHomedir1">priority </label> <input type="text" class="form-control" ng-model="value"  placeholder="priority"/>
+                    <label >priority </label> <input type="text" class="form-control" ng-model="value"  placeholder="priority"/>
               </div>
               <div class="form-group" ng-show="record_type == 'TXT'" >
-                    <label for="exampleInputHomedir1">entry </label> <input type="text" class="form-control" ng-model="value"  placeholder="entry"/>
+                    <label >entry </label> <input type="text" class="form-control" ng-model="value"  placeholder="entry"/>
               </div>
-              <button  type="submit" class="btn btn-default" ng-click="addRecord(zone,name,value)" >Submit</button>                            
+              <div class="form-group" ng-show="record_type == 'ROOT_IPv4' || record_type == 'ROOT_IPv6'" >
+                    <label >IP </label> <input type="text" class="form-control" ng-model="value"  placeholder="IP"/>
+              </div>
+              <div class="form-group" ng-show="record_type == 'SOA' || record_type == 'NS'" >
+                    <label >FQDN </label> <input type="text" class="form-control" ng-model="value"  placeholder="fqdn"/>
+              </div>
+              <button  type="submit" class="btn btn-default" ng-click="addRecord(zone,name,value,ttl)" >Submit</button>                            
             </form>
             
             

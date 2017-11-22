@@ -16,7 +16,7 @@ function ZoneManagerCtrl($rootScope, $scope, $http, $filter, $uibModal, localSto
 
   $scope.zone =  $rootScope.servername 
 
-  $scope.addRecord = function(zone,name,value) {
+  $scope.addRecord = function(zone,name,value,ttl) {
     
         //ftp_user_data = {"domain":server,"username":username,"homedir":homedir,"password":password}
         //console.log({"domain":server,"username":username,"homedir":homedir,"password":password})
@@ -25,6 +25,7 @@ function ZoneManagerCtrl($rootScope, $scope, $http, $filter, $uibModal, localSto
         var data = {'type':$scope.record_type,'zone':zone,'name':name}
         if ($scope.record_type == 'A' || $scope.record_type == 'AAAA' || $scope.record_type == 'CNAME'){
           data['destination'] = value
+          data['ttl'] = ttl
         }
         else if ($scope.record_type == 'TXT'){
           data['entry'] = value
@@ -32,7 +33,13 @@ function ZoneManagerCtrl($rootScope, $scope, $http, $filter, $uibModal, localSto
         else if ($scope.record_type == 'MX'){
           data['priority'] = value
         }
-        
+        else if ($scope.record_type == 'ROOT_IPv4' || $scope.record_type == 'ROOT_IPv6'){
+          data['value'] = value
+        }
+        else if ($scope.record_type == 'TTL' ){
+          data['ttl'] = ttl
+        }
+
         $http.put("/api/dns", data, { headers : {'Content-Type' : 'application/json'} })
         .then(function(response) {
             $rootScope.getZoneDetails(zone)
@@ -62,6 +69,7 @@ function ZoneDetailsCtrl($stateParams, $rootScope, $scope, $http, $filter, $uibM
     $http.get("/api/dns",  { "params": { "zone": zone } })
     .then(function(response) {
             $scope.zone = $stateParams.zoneId
+            console.log(response.data)
             $scope.zone_data = response.data['results']
             $scope.zone_a = response.data['results']['A']
             $scope.zone_aaaa = response.data['results']['AAAA']
@@ -69,6 +77,11 @@ function ZoneDetailsCtrl($stateParams, $rootScope, $scope, $http, $filter, $uibM
             $scope.zone_mx = response.data['results']['MX']
             $scope.zone_txt = response.data['results']['TXT']
             $scope.zone_srv = response.data['results']['SRV']
+            $scope.root_ipv4 = response.data['results']['ROOT_IPv4']
+            $scope.root_ipv6 = response.data['results']['ROOT_IPv6']
+            $scope.soa = response.data['results']['SOA']
+            $scope.ns = response.data['results']['NS']
+            $scope.ttl = response.data['results']['TTL']
         });    
       };
 
@@ -87,13 +100,22 @@ if ($stateParams.zoneId){
 
   $scope.removeRecord = function(type, data) {
     
-      console.log("Request to remove entry " + data['name'] + " from type : " + type + " and zone " + $scope.servername)
-      data['zone'] = $scope.servername
-      data['type'] = type
+      //console.log("Request to remove entry " + data['name'] + " from type : " + type + " and zone " + $scope.servername)
+      var params = {}
+      if (typeof data === 'string' || data instanceof String){
+        params['zone'] = $scope.servername
+        params['type'] = type
+        params['value'] = data
+      }
+      else {
+        params = data
+        params['zone'] = $scope.servername
+        params['type'] = type
+      }
       console.log(data)
-      $http.delete("/api/dns", {"params":data})
+      $http.delete("/api/dns", {"params":params})
       .then(function(response) {
-          console.log("Updating zone after removing entry" + data['name'] )
+          //console.log("Updating zone after removing entry" + data['name'] )
           $scope.getZoneDetails($scope.servername)
         });
   

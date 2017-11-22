@@ -3,7 +3,121 @@
     <button style="display: inline;" class="btn btn-primary pull-right"  data-toggle="modal" ng-click="applyZoneConfig(zone)">Apply Config</button>            
     <br></br>   
 </div>
-      
+      <div >
+          <div class="rec_title">
+            <h3 style="display: inline;" >TTL<small style="font-weight:normal"><a href="/hosting/help/714" target="_blank">What's this?</a></small></h3>
+          </div>
+          <table class="table table-bordered table-hover table-condensed">
+              <tr>
+                <td style="width:45%;" > <span class="pull-left"> TTL </span></td>
+                <td style="width:10%"  >Actions</td>
+              </tr>
+              <tr  class="editable-row">
+                <td style="width:45%" >
+                    <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                      {{ ttl.base }}
+                    </span>
+                </td>
+                <td style="width:10%" >
+                  <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('TTL', ttl.base)">Delete</button>
+                </td>
+              </tr>
+            </table>
+            <br>
+          </br>
+      </div>
+      <div >
+          <div class="rec_title">
+            <h3 style="display: inline;" >SOA<small style="font-weight:normal"><a href="/hosting/help/714" target="_blank">What's this?</a></small></h3>
+          </div>
+          <table class="table table-bordered table-hover table-condensed">
+              <tr>
+                <td style="width:45%;" > <span class="pull-left"> root ip </span></td>
+                <td style="width:10%"  >Actions</td>
+              </tr>
+              <tr ng-repeat="entry in soa" class="editable-row">
+                <td style="width:45%" >
+                    <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                      {{ entry }}
+                    </span>
+                </td>
+                <td style="width:10%" >
+                  <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('ROOT_IPv4', root)">Delete</button>
+                </td>
+              </tr>
+            </table>
+            <br>
+          </br>
+      </div>
+      <div >
+          <div class="rec_title">
+            <h3 style="display: inline;" >NS<small style="font-weight:normal"><a href="/hosting/help/714" target="_blank">What's this?</a></small></h3>
+          </div>
+          <table class="table table-bordered table-hover table-condensed">
+              <tr>
+                <td style="width:45%;" > <span class="pull-left"> root ip </span></td>
+                <td style="width:10%"  >Actions</td>
+              </tr>
+              <tr ng-repeat="entry in ns" class="editable-row">
+                <td style="width:45%" >
+                    <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                      {{ entry }}
+                    </span>
+                </td>
+                <td style="width:10%" >
+                  <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('ROOT_IPv4', root)">Delete</button>
+                </td>
+              </tr>
+            </table>
+            <br>
+          </br>
+      </div> 
+      <div >
+          <div class="rec_title">
+            <h3 style="display: inline;" >ROOT IPv4 <small style="font-weight:normal"><a href="/hosting/help/714" target="_blank">What's this?</a></small></h3>
+          </div>
+          <table class="table table-bordered table-hover table-condensed">
+              <tr>
+                <td style="width:45%;" > <span class="pull-left"> root ip </span></td>
+                <td style="width:10%"  >Actions</td>
+              </tr>
+              <tr ng-repeat="root in root_ipv4" class="editable-row">
+                <td style="width:45%" >
+                    <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                      {{ root || 'empty' }}
+                    </span>
+                </td>
+                <td style="width:10%" >
+                  <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('ROOT_IPv4', root)">Delete</button>
+                </td>
+              </tr>
+            </table>
+            <br>
+          </br>
+      </div> 
+      <div >
+          <div class="rec_title">
+            <h3 style="display: inline;" >ROOT IPv6 <small style="font-weight:normal"><a href="/hosting/help/714" target="_blank">What's this?</a></small></h3>
+          </div>
+          <table class="table table-bordered table-hover table-condensed">
+              <tr>
+                <td style="width:45%;" > <span class="pull-left"> root ip </span></td>
+                <td style="width:10%"  >Actions</td>
+              </tr>
+              <tr ng-repeat="root in root_ipv6" class="editable-row">
+                <td style="width:45%" >
+                    <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                      {{ root || 'empty' }}
+                    </span>
+                </td>
+                <td style="width:10%" >
+                  <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('ROOT_IPv6', root)">Delete</button>
+                </td>
+              </tr>
+            </table>
+            <br>
+          </br>
+      </div>      
       <div >
           <div class="rec_title">
             <h3 style="display: inline;" >A (Host)<small style="font-weight:normal"><a href="/hosting/help/714" target="_blank">What's this?</a></small></h3>
@@ -12,18 +126,24 @@
               <tr>
                 <td style="width:45%;" > <span class="pull-left"> host record </span></td>
                 <td style="width:45%" >points to</td>
+                <td style="width:45%" >ttl</td>
                 <td style="width:10%"  >Actions</td>
               </tr>
               <tr ng-repeat="zone in zone_a" class="editable-row">
-                <td style="width:45%" >
-                    <span class="pull-left" e-name="name" e-form="rowform" e-required>
-                      {{ zone.name || 'empty' }}
-                    </span>
-                </td>
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ zone.name || 'empty' }}
+                      </span>
+                  </td>
                 <td style="width:45%" >
                       <a  href="#"  editable-text="zone.name" onaftersave="updateDestination(data)" >
                               {{ zone.destination || 'empty' }}
                       </a>
+                </td>
+                <td style="width:45%" >
+                    <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                      {{ zone.ttl || 'default' }}
+                    </span>
                 </td>
                 <td style="width:10%" >
                   <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('A', zone)">Delete</button>
@@ -43,6 +163,7 @@
               <tr>
                 <td style="width:45%" ><span class="pull-left"> host record </span></td>
                 <td style="width:45%" >points to</td>
+                <td style="width:45%" >ttl</td>
                 <td style="width:10%"  >Actions</td>
               </tr>
               <tr ng-repeat="zone in zone_aaaa" class="editable-row">
@@ -55,6 +176,11 @@
                       <a  href="#"  editable-text="zone.name" onaftersave="updateDestination(data)" >
                               {{ zone.destination || 'empty' }}
                       </a>
+                </td>
+                <td style="width:45%" >
+                    <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                      {{ zone.ttl || 'default' }}
+                    </span>
                 </td>
                 <td  style="width:10%"  >
                     <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('AAAA', zone)">Delete</button>
@@ -73,6 +199,7 @@
               <tr>
                 <td style="width:45%" ><span class="pull-left"> host record </span></td>
                 <td style="width:45%" >points to</td>
+                <td style="width:45%" >ttl</td>
                 <td style="width:10%"  >Actions</td>
               </tr>
               <tr ng-repeat="zone in zone_cname" class="editable-row">
@@ -85,6 +212,11 @@
                       <a  href="#"  editable-text="zone.name" onaftersave="updateDestination(data)" >
                               {{ zone.destination || 'empty' }}
                       </a>
+                </td>
+                <td style="width:45%" >
+                    <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                      {{ zone.ttl || 'default' }}
+                    </span>
                 </td>
                 <td>
                     <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('CNAME', zone)">Delete</button>
@@ -137,8 +269,9 @@
 
           <table class="table table-bordered table-hover table-condensed">
               <tr>
-                <td style="width:45%" >host records</td>
-                <td style="width:45%" ><span class="pull-left"> txt value </span></td>
+                <td style="width:40%" >host records</td>
+                <td style="width:40%" ><span class="pull-left"> txt value </span></td>
+                <td style="width:10%" >ttl</td>
                 <td style="width:10%"  >Actions</td>
               </tr>
               <tr ng-repeat="zone in zone_txt" class="editable-row">
@@ -151,6 +284,11 @@
                       <a  href="#"  editable-text="zone.entry" onaftersave="updateDestination(data)" >
                               {{ zone.entry || 'empty' }}
                       </a>
+                </td>
+                <td style="width:45%" >
+                    <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                      {{ zone.ttl || 'default' }}
+                    </span>
                 </td>
                 <td>
                     <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('TXT', zone)">Delete</button>
@@ -170,6 +308,7 @@
                 <td>Priority</td>
                 <td>host record</td>
                 <td style="width:40%" >points to</td>
+                <td style="width:10%" >ttl</td>
                 <td style="width:10%"  >Actions</td>
               </tr>
               <tr ng-repeat="zone in zone_srv" class="editable-row">
@@ -187,6 +326,11 @@
                       <a  href="#"  editable-text="zone.name" onaftersave="updateDestination(data)" >
                               {{ zone.name || 'empty' }}
                       </a>
+                </td>
+                <td style="width:45%" >
+                    <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                      {{ zone.ttl || 'default' }}
+                    </span>
                 </td>
                 <td>
                     <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('SRV', zone)">Delete</button>
