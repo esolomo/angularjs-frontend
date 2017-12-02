@@ -22,10 +22,10 @@
           order: 300,
         },
         authenticate: true
-      }).state('main.dns.list', {
-        url: '/list',
+      }).state('main.dns.zones', {
+        url: '/zones',
         templateUrl: 'app/pages/dns/smart/dns.html',
-        title: 'DNS Sites',
+        title: 'Zones',
         sidebarMeta: {
           order: 100,
         },
@@ -33,7 +33,7 @@
       }).state('main.dns.details', {
         url: '/details/:zoneId>',
         templateUrl: 'app/pages/dns/smart/details.html',
-        title: 'DNS Details  Zone',
+        title: 'Records',
         controller: 'ZoneDetailsCtrl',
         sidebarMeta: {
           order: 100,

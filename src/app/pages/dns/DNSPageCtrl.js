@@ -16,27 +16,30 @@ function ZoneManagerCtrl($rootScope, $scope, $http, $filter, $uibModal, localSto
 
   $scope.zone =  $rootScope.servername 
 
-  $scope.addRecord = function(zone,name,value,ttl) {
+  $scope.addRecord = function(type,zone,name,value,ttl) {
     
         //ftp_user_data = {"domain":server,"username":username,"homedir":homedir,"password":password}
         //console.log({"domain":server,"username":username,"homedir":homedir,"password":password})
         //data['type'] = type
         //data['zone'] = $scope.zone
-        var data = {'type':$scope.record_type,'zone':zone,'name':name}
-        if ($scope.record_type == 'A' || $scope.record_type == 'AAAA' || $scope.record_type == 'CNAME'){
+        var data = {'type':type,'zone':zone,'name':name}
+        if (type == 'A' || type == 'AAAA' || type == 'CNAME'){
           data['destination'] = value
           data['ttl'] = ttl
         }
-        else if ($scope.record_type == 'TXT'){
+        else if (type == 'TXT'){
           data['entry'] = value
         }
-        else if ($scope.record_type == 'MX'){
+        else if (type == 'MX'){
           data['priority'] = value
         }
-        else if ($scope.record_type == 'ROOT_IPv4' || $scope.record_type == 'ROOT_IPv6'){
+        else if (type == 'managed_zones'){
+          data['managed_zones'] = value
+        }
+        else if (type == 'ROOT_IPv4' || type == 'ROOT_IPv6'){
           data['value'] = value
         }
-        else if ($scope.record_type == 'TTL' ){
+        else if (type == 'TTL' ){
           data['ttl'] = ttl
         }
 
@@ -63,14 +66,16 @@ function ZoneManagerCtrl($rootScope, $scope, $http, $filter, $uibModal, localSto
 /** @ngInject */  
 
 
-function ZoneDetailsCtrl($stateParams, $rootScope, $scope, $http, $filter, $uibModal, localStorage, editableOptions, editableThemes) {
+function ZoneDetailsCtrl($stateParams, $rootScope, $scope, $http, $filter, $uibModal, localStorage, editableOptions, editableThemes, $state) {
 
   $rootScope.getZoneDetails = $scope.getZoneDetails = function(zone) {
     $http.get("/api/dns",  { "params": { "zone": zone } })
     .then(function(response) {
             $scope.zone = $stateParams.zoneId
             console.log(response.data)
+
             $scope.zone_data = response.data['results']
+            $scope.main_zone = response.data['results']['main_zone']
             $scope.zone_a = response.data['results']['A']
             $scope.zone_aaaa = response.data['results']['AAAA']
             $scope.zone_cname = response.data['results']['CNAME']
@@ -82,21 +87,53 @@ function ZoneDetailsCtrl($stateParams, $rootScope, $scope, $http, $filter, $uibM
             $scope.soa = response.data['results']['SOA']
             $scope.ns = response.data['results']['NS']
             $scope.ttl = response.data['results']['TTL']
+            $scope.managed_zones = response.data['results']['managed_zones']
+            console.log("Managed Zones : ")
+            console.log($scope.managed_zones)
+            console.log(response.data['results']['managed_zones'])
         });    
       };
 
 if ($stateParams.zoneId){
-  $rootScope.servername = $scope.servername = $stateParams.zoneId
-  $scope.getZoneDetails($scope.servername)
+    $rootScope.servername = $scope.servername = $stateParams.zoneId
+    $scope.getZoneDetails($scope.servername)
+    $scope.isSiteSelected = true
   }
+else{
+  $scope.isSiteSelected = false
+}
+
+$scope.gotoselectzone= function() {
+  $state.go('main.dns.zones'); 
+}
+$scope.storeTTL= function(ttl) {
+  console.log(ttl)
+  $scope.old_ttl = ttl
+}
+
+$scope.updateTTL= function(ttl) {
+  console.log($scope.old_ttl )
+  console.log(ttl)
+  if ( $scope.old_ttl  == ttl ){
+    console.log("Same value : nothing to change "  + ttl)
+  }
+  else{
+    var data = {'type':'TTL','zone': $scope.zone, 'ttl':ttl }
+    $http.put("/api/dns", data, { headers : {'Content-Type' : 'application/json'} })
+    .then(function(response) {
+      $scope.getZoneDetails($scope.zone)
+    });
+    console.log("New value : updating TTL with value  "  + ttl)
+  }
+}
 
   $scope.applyZoneConfig = function(zone) {
-
     $http.post("/api/config/dns", {"zone":zone}, { headers : {'Content-Type' : 'application/json'} })
     .then(function(response) {
-
-        });
+      $scope.open('app/pages/ui/modals/modalTemplates/configurationSuccessModal.html')
+      });
   };
+
 
   $scope.removeRecord = function(type, data) {
     

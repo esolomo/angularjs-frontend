@@ -89,8 +89,10 @@ $rootScope.getFTPSiteDetails = $scope.getFTPSiteDetails = function() {
       });
   };
 
-  $scope.getFTPSiteDetails()
-
+  if  ($stateParams.siteId){
+    $scope.getFTPSiteDetails()
+  }
+  
   $scope.getFTPSiteDetailsFromSelect = function() {
     $http.post("/api/ftp", { "site": ftpserver }, { headers : {'Content-Type' : 'application/json'} })
     .then(function(response) {

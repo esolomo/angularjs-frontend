@@ -1,4 +1,4 @@
-<div class="widgets">
+<div ng-hide="(records.length == 0) ? true : false" class="widgets">
 
   <div class="row">
     <div class="col-md-12">
@@ -7,6 +7,7 @@
       </div>
     </div>
   </div>
-
-
+</div>
+<div ng-hide="(records.length == 0) ? false : true" class="add-row-editable-table">
+    <button class="btn btn-primary" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZone.html')">Create first Zone </button>
 </div>

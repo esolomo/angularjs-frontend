@@ -1,5 +1,4 @@
-<div class="widgets">
-        
+<div ng-hide="!isSiteSelected"  class="widgets">
           <div class="row">
             <div class="col-md-12">
               <div ba-panel  ba-panel-class="with-scroll">
@@ -7,6 +6,7 @@
               </div>
             </div>
           </div>
-        
-        
+</div>
+<div ng-show="!isSiteSelected"  style="width:100%; height:400px;"  >
+        <button ng-click="gotoselectzone()" style="position:relative; margin: -20px -50px; top:50%; left:50%; " class="btn btn-primary">Please Select Zone</button>    
 </div>

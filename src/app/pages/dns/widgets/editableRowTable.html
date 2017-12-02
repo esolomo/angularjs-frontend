@@ -1,18 +1,18 @@
-<div class="add-row-editable-table">
+<div  class="add-row-editable-table">
   <button class="btn btn-primary" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZone.html')">Add Zone </button>
 </div>
 
 <div >
-<table class="table table-bordered table-hover table-condensed">
+<table  class="table table-bordered table-hover table-condensed">
   <tr>
-      <td  style="text-align:left;">Domain</td>
-      <td  style="text-align:left;">Zone</td>
+      <td  style="text-align:left;">Owner</td>
+      <td  style="text-align:left;">Main Domain</td>
     <td>Actions</td>
   </tr>
   <tr ng-repeat="record in records" class="editable-row">
     <td>
         <span style="float:left" e-name="name" e-form="rowform" e-required>
-          {{ record.zone || 'empty' }}
+          {{ record.customer || 'Unknown' }}
         </span>
     </td>
     <td>
@@ -21,16 +21,7 @@
         </span>
     </td>
     <td style="width:20%;">
-      <form editable-form name="rowform" onbeforesave="saveDomain(domain.name, $data)" ng-show="!rowform.$visible" class="form-buttons form-inline" shown="inserted == domain">
-        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary editable-table-button btn-xs">
-          Save
-        </button>
-        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
-          Cancel
-        </button>
-      </form>
-      <div class="buttons" ng-show="rowform.$visible">
-        <button class="btn btn-primary editable-table-button btn-xs" ng-click="rowform.$show()">Edit</button>
+      <div class="buttons" >
         <button class="btn btn-primary editable-table-button btn-xs" ui-sref="main.dns.details({zoneId: record.zone})" >View</button>
         <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeZone(record.zone)">Delete</button>
       </div>

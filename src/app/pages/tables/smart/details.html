@@ -1,4 +1,4 @@
-<div class="widgets">
+<div ng-hide="!isSiteSelected" class="widgets">
         
           <div class="row">
             <div class="col-md-12">
@@ -6,7 +6,8 @@
                 <div include-with-scope="app/pages/tables/widgets/viewdetails.html"></div>
               </div>
             </div>
-          </div>
-        
-        
+          </div>    
+</div>
+<div ng-show="!isSiteSelected" style="width:100%; height:400px;"  >
+    <button ng-show="!isSiteSelected" ng-click="gotoselectsite()" style="position:relative; margin: -20px -50px; top:50%; left:50%; " class="btn btn-primary">Please Select FTP site </button>    
 </div>
