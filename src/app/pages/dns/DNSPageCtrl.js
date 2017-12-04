@@ -127,12 +127,14 @@ $scope.updateTTL= function(ttl) {
   }
 }
 
-  $scope.applyZoneConfig = function(zone) {
-    $http.post("/api/config/dns", {"zone":zone}, { headers : {'Content-Type' : 'application/json'} })
-    .then(function(response) {
-      $scope.open('app/pages/ui/modals/modalTemplates/configurationSuccessModal.html')
-      });
-  };
+$scope.applyZoneConfig = function(zone) {
+  $http.post("/api/config/dns", {"zone":zone}, { headers : {'Content-Type' : 'application/json'} })
+  .then(function(response) {
+    $scope.open('app/pages/ui/modals/modalTemplates/configurationSuccessModal.html')
+    });
+};
+
+
 
 
   $scope.removeRecord = function(type, data) {
@@ -248,6 +250,12 @@ function ZoneCtrl($rootScope, $scope, $http, $filter, $uibModal, localStorage, e
           });
     };
 
+    $scope.deployDNSConfig = function() {
+      $http.post("/api/deploy/dns", {}, { headers : {'Content-Type' : 'application/json'} })
+      .then(function(response) {
+        $scope.open('app/pages/ui/modals/modalTemplates/deployConfigurationSuccessModal.html')
+        });
+    };
 
     $scope.getZones()
 
