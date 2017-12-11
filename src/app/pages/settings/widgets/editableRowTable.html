@@ -1,0 +1,24 @@
+
+<div >
+<table  class="table table-bordered table-hover table-condensed">
+  <tr>
+    <td  style="text-align:left;width:30%;">SSH User</td>
+    <td  style="text-align:left;">SSH Key</td>
+  </tr>
+  <tr  class="editable-row">
+    <td style="width:30%;text-align:left;">
+        <a  href="#"  editable-text="settings.ssh_user" onaftersave="setSSH_User(settings.ssh_user)" >
+            {{ settings.ssh_user || 'No User Defined' }}
+        </a>  
+    </td>
+    <td >
+        <a  href="#"  editable-textarea="settings.ssh_key" onaftersave="setSSH_Key(settings.ssh_key)" >
+            <pre>{{ settings.ssh_key || 'No Key Defined' }}</pre>
+        </a>        
+    </td>
+  </tr>
+</table>
+</div>
+
+
+  

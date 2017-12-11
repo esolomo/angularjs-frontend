@@ -18,7 +18,7 @@
         controller: 'TablesPageCtrl',
         title: 'FTP Management',
         sidebarMeta: {
-          icon: 'ion-grid',
+          icon: 'ion-ios-folder',
           order: 300,
         },
         authenticate: true

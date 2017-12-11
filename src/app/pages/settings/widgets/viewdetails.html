@@ -1,0 +1,314 @@
+<div >
+
+    <uib-tabset active="$tabSetStatus.activeTab">
+        <uib-tab heading="Primary domain">
+            <table  class="table table-bordered table-hover table-condensed">
+                <tr   >
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ main_zone }}
+                      </span>
+                  </td>
+              </table>
+              <br></br>
+              <button ng-click="applyZoneConfig(main_zone)"  class="pull-right btn btn-primary">create zone configuration</button>              
+        </uib-tab>
+        <uib-tab heading="Managed domains">
+            <table ng-hide="(managed_zones.length == 0) ? true : false" class="table table-bordered table-hover table-condensed">
+                <tr  ng-repeat="zone in managed_zones" >
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ zone }}
+                      </span>
+                  </td>
+                  <td style="width:10%" >
+                      <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('managed_zones', zone)">Delete</button>
+                    </td>
+                </tr>
+              </table>
+              <br></br>
+              <button  ng-hide="(managed_zones.length == 0) ? true : false" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_subzone.html')"  class="pull-right btn btn-primary">Add managed zone</button>  
+              <br></br>
+              <button  ng-hide="(managed_zones.length == 0) ? false : true" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_subzone.html')"  style="position:relative; margin: 40px -200px; top:50%; left:50%;" class=" btn btn-primary">Create managed zone</button>
+              <br></br>             
+        </uib-tab>
+        <uib-tab heading="TTL">
+            <table class="table table-bordered table-hover table-condensed">
+                <tr class="editable-row ng-scope">
+                  <td style="width:45%" >
+                      <a   href="#"  editable-text="ttl.base" onbeforesave="storeTTL(ttl.base)" onaftersave="updateTTL(ttl.base)" >
+                          {{ ttl.base  }}
+                      </a>
+                  </td>
+                </tr>
+              </table>
+        </uib-tab>
+        <uib-tab heading="SOA">
+            <table class="table table-bordered table-hover table-condensed">
+                <tr ng-repeat="entry in soa" >
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ entry }}
+                      </span>
+                  </td>
+                </tr>
+              </table>
+        </uib-tab>
+        <uib-tab heading="NS">
+            <table class="table table-bordered table-hover table-condensed">
+                <tr ng-repeat="entry in ns" >
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ entry }}
+                      </span>
+                  </td>
+                </tr>
+              </table>
+        </uib-tab>
+        <uib-tab heading="ROOT IPv4">
+            <table ng-hide="(root_ipv4.length == 0) ? true : false" class="table table-bordered table-hover table-condensed">
+                <tr ng-repeat="root in root_ipv4" >
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ root || 'empty' }}
+                      </span>
+                  </td>
+                  <td style="width:10%" >
+                    <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('ROOT_IPv4', root)">Delete</button>
+                  </td>
+                </tr>
+              </table>
+              <br></br>
+              <button  ng-hide="(root_ipv4.length == 0) ? true : false" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_IPv4.html')"   class="pull-right btn btn-primary">Add Record</button>                
+              <br></br>
+              <button  ng-hide="(root_ipv4.length == 0) ? false : true" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_IPv4.html')"  style="position:relative; margin: 40px -200px; top:50%; left:50%;" class=" btn btn-primary">Create first Record</button>                
+        </uib-tab>
+        <uib-tab heading="ROOT IPv6">
+            <table ng-hide="(root_ipv6.length == 0) ? true : false" class="table table-bordered table-hover table-condensed">
+                <tr ng-repeat="root in root_ipv6" >
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ root || 'empty' }}
+                      </span>
+                  </td>
+                  <td style="width:10%" >
+                    <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('ROOT_IPv6', root)">Delete</button>
+                  </td>
+                </tr>
+              </table>
+              <br></br>
+              <button  ng-hide="(root_ipv6.length == 0) ? true : false" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_IPv6.html')"  class="pull-right btn btn-primary">Add Record</button>  
+              <br></br>
+              <button  ng-hide="(root_ipv6.length == 0) ? false : true" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_IPv6.html')"  style="position:relative; margin: 40px -200px; top:50%; left:50%;" class=" btn btn-primary">Create first Record</button>  
+        </uib-tab>
+        <uib-tab heading="A">
+            <table ng-hide="(zone_a.length == 0) ? true : false" class="table table-bordered table-hover table-condensed">
+                <tr>
+                  <td style="width:45%;" > <span class="pull-left"> host record </span></td>
+                  <td style="width:45%" >points to</td>
+                  <td style="width:45%" >ttl</td>
+                  <td style="width:10%"  >Actions</td>
+                </tr>
+                <tr ng-repeat="zone in zone_a" >
+                    <td style="width:45%" >
+                        <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                          {{ zone.name || 'empty' }}
+                        </span>
+                    </td>
+                  <td style="width:45%" >
+                        <a  href="#"  editable-text="zone.name" onaftersave="updateDestination(data)" >
+                                {{ zone.destination || 'empty' }}
+                        </a>
+                  </td>
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ zone.ttl || 'default' }}
+                      </span>
+                  </td>
+                  <td style="width:10%" >
+                    <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('A', zone)">Delete</button>
+                  </td>
+                </tr>
+              </table>
+              <br></br>
+              <button  ng-hide="(zone_a.length == 0) ? true : false" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_A.html')"  class="pull-right btn btn-primary">Add Record</button>  
+              <br></br>
+              <button  ng-hide="(zone_a.length == 0) ? false : true" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_A.html')"  style="position:relative; margin: 40px -200px; top:50%; left:50%;" class=" btn btn-primary">Create first Record</button>  
+        </uib-tab>
+        <uib-tab heading="AAAA">
+            <table ng-hide="(zone_aaaa.length == 0) ? true : false" class="table table-bordered table-hover table-condensed">
+                <tr>
+                  <td style="width:45%" ><span class="pull-left"> host record </span></td>
+                  <td style="width:45%" >points to</td>
+                  <td style="width:45%" >ttl</td>
+                  <td style="width:10%"  >Actions</td>
+                </tr>
+                <tr ng-repeat="zone in zone_aaaa" class="editable-row">
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ zone.name || 'empty' }}
+                      </span>
+                  </td>
+                  <td style="width:45%" >
+                        <a  href="#"  editable-text="zone.name" onaftersave="updateDestination(data)" >
+                                {{ zone.destination || 'empty' }}
+                        </a>
+                  </td>
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ zone.ttl || 'default' }}
+                      </span>
+                  </td>
+                  <td  style="width:10%"  >
+                      <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('AAAA', zone)">Delete</button>
+                  </td>
+                </tr>
+              </table>
+              <br></br>
+              <button  ng-hide="(zone_aaaa.length == 0) ? true : false" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_AAAA.html')"  class="pull-right btn btn-primary">Add Record</button>  
+              <br></br>
+              <button  ng-hide="(zone_aaaa.length == 0) ? false : true" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_AAAA.html')"  style="position:relative; margin: 40px -200px; top:50%; left:50%;" class=" btn btn-primary">Create first Record</button>  
+        </uib-tab>
+        <uib-tab heading="CNAME">
+            <table ng-hide="(zone_cname.length == 0) ? true : false" class="table table-bordered table-hover table-condensed">
+                <tr>
+                  <td style="width:45%" ><span class="pull-left"> host record </span></td>
+                  <td style="width:45%" >points to</td>
+                  <td style="width:45%" >ttl</td>
+                  <td style="width:10%"  >Actions</td>
+                </tr>
+                <tr ng-repeat="zone in zone_cname" class="editable-row">
+                  <td>
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ zone.name || 'empty' }}
+                      </span>
+                  </td>
+                  <td >
+                        <a  href="#"  editable-text="zone.name" onaftersave="updateDestination(data)" >
+                                {{ zone.destination || 'empty' }}
+                        </a>
+                  </td>
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ zone.ttl || 'default' }}
+                      </span>
+                  </td>
+                  <td>
+                      <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('CNAME', zone)">Delete</button>
+                  </td>
+                </tr>
+              </table>
+              <br></br>
+              <button  ng-hide="(zone_cname.length == 0) ? true : false" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_CNAME.html')"  class="pull-right btn btn-primary">Add Record</button>  
+              <br></br>
+              <button  ng-hide="(zone_cname.length == 0) ? false : true" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_CNAME.html')"  style="position:relative; margin: 40px -200px; top:50%; left:50%;" class=" btn btn-primary">Create first Record</button>  
+        </uib-tab>
+        <uib-tab heading="MX">
+            <table ng-hide="(zone_mx.length == 0) ? true : false" class="table table-bordered table-hover table-condensed">
+                <tr>
+                  <td style="width:40%" ><span class="pull-left"> host record </span></td>
+                  <td style="width:40%" >points to</td>
+                  <td style="width:10%" ><span class="pull-left"> priority </span></td>
+                  <td style="width:10%"  >Actions</td>
+                </tr>
+                <tr ng-repeat="zone in zone_mx" class="editable-row">
+                  <td>
+                        <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                          @
+                        </span>
+                  </td>
+                  <td >
+                        <a  href="#"  editable-text="zone.name" onaftersave="updateDestination(data)" >
+                                {{ zone.name || 'empty' }}
+                        </a>
+                  </td>
+                  <td>
+                      <a  href="#"  editable-text="zone.priority" onaftersave="updateDestination(data)" >
+                          {{ zone.priority || 'empty' }}
+                      </a>
+                  </td>
+                  <td>
+                      <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('MX', zone)">Delete</button>
+                  </td>
+                </tr>
+              </table>
+              <br></br>
+              <button  ng-hide="(zone_mx.length == 0) ? true : false" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_MX.html')"  class="pull-right btn btn-primary">Add Record</button>  
+              <br></br>
+              <button  ng-hide="(zone_mx.length == 0) ? false : true" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_MX.html')"  style="position:relative; margin: 40px -200px; top:50%; left:50%;" class=" btn btn-primary">Create first Record</button>  
+        </uib-tab>
+        <uib-tab heading="TXT">
+            <table ng-hide="(zone_txt.length == 0) ? true : false" class="table table-bordered table-hover table-condensed">
+                <tr>
+                  <td style="width:40%" >host records</td>
+                  <td style="width:40%" ><span class="pull-left"> txt value </span></td>
+                  <td style="width:10%" >ttl</td>
+                  <td style="width:10%"  >Actions</td>
+                </tr>
+                <tr ng-repeat="zone in zone_txt" class="editable-row">
+                  <td>
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ zone.name || 'empty' }}
+                      </span>
+                  </td>
+                  <td >
+                        <a  href="#"  editable-text="zone.entry" onaftersave="updateDestination(data)" >
+                                {{ zone.entry || 'empty' }}
+                        </a>
+                  </td>
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ zone.ttl || 'default' }}
+                      </span>
+                  </td>
+                  <td>
+                      <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('TXT', zone)">Delete</button>
+                  </td>
+                </tr>
+              </table>
+              <br></br>
+              <button  ng-hide="(zone_txt.length == 0) ? true : false" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_TXT.html')"  class="pull-right btn btn-primary">Add Record</button>  
+              <br></br>
+              <button  ng-hide="(zone_txt.length == 0) ? false : true" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_TXT.html')"  style="position:relative; margin: 40px -200px; top:50%; left:50%;" class=" btn btn-primary">Create first Record</button>  
+        </uib-tab>
+        <uib-tab ng-hide="(zone_srv.length == 0) ? true : false" heading="SRV">
+            <table ng-hide="(zone_srv.length == 0) ? true : false" class="table table-bordered table-hover table-condensed">
+                <tr>
+                  <td>Priority</td>
+                  <td>host record</td>
+                  <td style="width:40%" >points to</td>
+                  <td style="width:10%" >ttl</td>
+                  <td style="width:10%"  >Actions</td>
+                </tr>
+                <tr ng-repeat="zone in zone_srv" class="editable-row">
+                  <td>
+                      <a  href="#"  editable-text="zone.priority" onaftersave="updateSRVPriority(data)" >
+                          {{ zone.priority || 'empty' }}
+                      </a>
+                  </td>
+                  <td>
+                      <span e-name="name" e-form="rowform" e-required>
+                        @
+                      </span>
+                  </td>
+                  <td >
+                        <a  href="#"  editable-text="zone.name" onaftersave="updateDestination(data)" >
+                                {{ zone.name || 'empty' }}
+                        </a>
+                  </td>
+                  <td style="width:45%" >
+                      <span class="pull-left" e-name="name" e-form="rowform" e-required>
+                        {{ zone.ttl || 'default' }}
+                      </span>
+                  </td>
+                  <td>
+                      <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeRecord('SRV', zone)">Delete</button>
+                  </td>
+                </tr>
+              </table>
+              <br></br>
+              <button  ng-hide="(zone_srv.length == 0) ? true : false" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_SRV.html')"  class="pull-right btn btn-primary">Add Record</button>  
+              <br></br>
+              <button  ng-hide="(zone_srv.length == 0) ? false : true" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/addZoneRecords_SRV.html')"  style="position:relative; margin: 40px -200px; top:50%; left:50%;" class=" btn btn-primary">Create first Record</button>  
+        </uib-tab>
+</div>

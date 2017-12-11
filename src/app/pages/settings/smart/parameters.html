@@ -1,0 +1,117 @@
+<uib-accordion>
+    <uib-accordion-group is-open="true" heading="Profile" panel-class="bootstrap-panel accordion-panel panel-default">
+        <p>My Profile Data</p>
+    </uib-accordion-group>
+    <uib-accordion-group is-open="true" heading="SSH Keys" panel-class="bootstrap-panel accordion-panel panel-default">
+        <table  class="table table-bordered table-hover table-condensed">
+            <tr  class="editable-row" ng-repeat="user_id in settings" >
+              <td  style="text-align:left;width:10%;">{{user_id.name}}</td>
+              <td style="width:20%;text-align:left;">
+                  <a  href="#"  editable-text="user_id.ssh_user" onaftersave="UpdateSSH_User(user_id, user_id.ssh_user)" >
+                      {{ user_id.ssh_user || 'No User Defined' }}
+                  </a>  
+              </td>
+              <td >
+                  <a  href="#"  editable-textarea="user_id.ssh_key" onaftersave="UpdateSSH_Key(user_id, user_id.ssh_key)" >
+                      <pre>{{ user_id.ssh_key || 'No Key Defined' }}</pre>
+                  </a>        
+              </td>
+              <td style="width:20%;">
+                  <div class="buttons" >
+                    <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeSSH_ID(user_id.name)">Delete</button>
+                  </div>
+                </td>
+            </tr>
+          </table>
+          <br></br>
+          <button type="button" class="btn btn-primary btn-sm pull-right">Add Ssh Key</button>
+    </uib-accordion-group>
+    <uib-accordion-group heading="DNS" panel-class="bootstrap-panel accordion-panel panel-default">
+      <table  class="table table-hover table-condensed">
+            <tr  class="editable-row"  >
+                    <td style="width:20%;text-align:left;">
+                        <a  href="#"   >
+                            Primary DNS Server
+                        </a>  
+                    </td>
+                    <td >
+                        <a  href="#"   editable-text="dns_settings.primary_dns" onaftersave="setDNSSettings('primary_dns', dns_settings.primary_dns)"  >
+                            {{ dns_settings.primary_dns || 'Not Defined'  }}
+                        </a>        
+                    </td>
+        </tr>
+        <tr  class="editable-row"  >
+                <td style="width:20%;text-align:left;">
+                    <a  href="#"   >
+                            Secondary DNS Server
+                    </a>  
+                </td>
+                <td >
+                    <a  href="#"  editable-text="dns_settings.secondary_dns" onaftersave="setDNSSettings('secondary_dns', dns_settings.secondary_dns)"   >
+                        {{ dns_settings.secondary_dns || 'Not Defined'  }}
+                    </a>        
+                </td>
+    </tr>
+        <tr  class="editable-row"  >
+                    <td style="width:20%;text-align:left;">
+                        <a  href="#"   >
+                            Configuration Directory
+                        </a>  
+                    </td>
+                    <td >
+                        <a  href="#"    editable-text="dns_settings.bind_config_dir" onaftersave="setDNSSettings('bind_config_dir', dns_settings.bind_config_dir)" >
+                            {{ dns_settings.bind_config_dir || 'Not Defined'  }}
+                        </a>        
+                    </td>
+        </tr>
+        <tr  class="editable-row"  >
+            <td style="width:20%;text-align:left;">
+                <a  href="#"   >
+                    Configuration File Name
+                </a>  
+            </td>
+            <td >
+                <a  href="#"  editable-text="dns_settings.bind_include_file" onaftersave="setDNSSettings('bind_include_file', dns_settings.bind_include_file)" >
+                    {{ dns_settings.bind_include_file || 'Not Defined'  }}
+                </a>        
+            </td>
+        </tr>
+        <tr  class="editable-row"  >
+                <td style="width:20%;text-align:left;">
+                    <a  href="#"   >
+                        Zone File Directory
+                    </a>  
+                </td>
+                <td >
+                    <a  href="#"  editable-text="dns_settings.bind_zone_file_dir" onaftersave="setDNSSettings('bind_zone_file_dir', dns_settings.bind_zone_file_dir)"  >
+                        {{ dns_settings.bind_zone_file_dir || 'Not Defined' }}
+                    </a>        
+                </td>
+        </tr>
+        <tr  class="editable-row"  >
+            <td style="width:20%;text-align:left;">
+                <a  href="#"   >
+                    SSH Key Name
+                </a>  
+            </td>
+            <td >
+                <a  href="#"  editable-text="dns_settings.ssh_key" onaftersave="setDNSSettings('ssh', dns_settings.ssh_key)" >
+                    {{ dns_settings.ssh_key || 'No Key Defined' }}
+                </a>        
+            </td>
+          </tr>
+      </table>
+
+    </uib-accordion-group>
+    <uib-accordion-group heading="FTP Service Parameters" panel-class="bootstrap-panel accordion-panel panel-default">
+      Hello
+    </uib-accordion-group>
+    <uib-accordion-group panel-class="bootstrap-panel accordion-panel panel-default">
+      <uib-accordion-heading>
+        I can have markup, too! <i class="fa pull-right ion-settings"></i>
+      </uib-accordion-heading>
+      This is just some content to illustrate fancy headings.
+    </uib-accordion-group>
+</uib-accordion>
+
+

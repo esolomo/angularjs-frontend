@@ -18,7 +18,7 @@
         controller: 'DNSPageCtrl',
         title: 'DNS Management',
         sidebarMeta: {
-          icon: 'ion-android-laptop',
+          icon: 'ion-earth',
           order: 300,
         },
         authenticate: true
