@@ -27,7 +27,7 @@
         </td>
         <td style="width:40%">
             <a  href="#"  type="hidden"  editable-text="ftp_password" ng-model=ftp_password onaftersave="updatePassword(data.username,ftp_password)" >
-                    {{ '**********' }}
+                {{ data.password || 'empty' }}
             </a>
       </td>
         <td style="width:10%">

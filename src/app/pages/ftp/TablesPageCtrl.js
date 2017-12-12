@@ -7,7 +7,7 @@
 
 
 
-  angular.module('BlurAdmin.pages.tables')
+  angular.module('BlurAdmin.pages.ftp')
   .controller('AddingSiteDetailsCtrl', AddingSiteDetailsCtrl);
 
 /** @ngInject */  
@@ -18,13 +18,8 @@ function AddingSiteDetailsCtrl($stateParams, $rootScope, $scope, $http, $filter,
   $scope.servername = $stateParams.siteId 
 
   $scope.addFTPUser = function(server,username,homedir,password) {
-
-    console.log("Adding FTP User " + server + " " + username + " " + homedir + " " + password)
     $http.post("/api/ftp/user", {"domain":server,"username":username,"datadir":homedir,"password":password}, { headers : {'Content-Type' : 'application/json'} })
     .then(function(response) {
-            console.log("Checking user list ")
-            console.log(response.data)
-            console.log("Fetching new user list data ")
             $rootScope.getFTPSiteDetails()
         });    
     $rootScope.addFTPInstance.close('a');
@@ -32,7 +27,7 @@ function AddingSiteDetailsCtrl($stateParams, $rootScope, $scope, $http, $filter,
 
 }
 
-  angular.module('BlurAdmin.pages.tables')
+  angular.module('BlurAdmin.pages.ftp')
   .controller('SiteDetailsCtrl', SiteDetailsCtrl);
 
 /** @ngInject */  
@@ -47,19 +42,12 @@ function SiteDetailsCtrl($stateParams, $rootScope, $scope, $http, $filter, $uibM
    };
 
    $scope.gotoselectsite= function() {
-     console.log("going to main ftp list")
     $state.go('main.ftp.list'); 
   }
-
-
-  console.log(localStorage.getObject('dataUser')["username"])
 
   $scope.initsrvlist= function() {
   $http.get("/api/domains",  config)
   .then(function(response) {
-          console.log("Data")
-          console.log(response.data)
-          console.log(response.data['domains'])
           if (response.data['status'] === "Success"){
             $scope.srvs = response.data['domains'];
           }
@@ -72,7 +60,6 @@ function SiteDetailsCtrl($stateParams, $rootScope, $scope, $http, $filter, $uibM
   $scope.initsrvlist()
 
   if ($stateParams.siteId){
-    console.log($stateParams.siteId)
     $scope.servername = $stateParams.siteId
     $scope.isSiteSelected = true
   }
@@ -103,13 +90,11 @@ $rootScope.getFTPSiteDetails = $scope.getFTPSiteDetails = function() {
     };
 
   $scope.removeFTPUser = function(ftpsite, username) {
-    console.log("in removeFTPUser")
     $http.delete("/api/ftp/user", {"params" : {"ftpsite":ftpsite, "username":username} })
     .then(function(response) {
             $scope.getFTPSiteDetails()
         });
   };
-
 
 $scope.updateHomedir = function(username,datadir) {
 
@@ -123,7 +108,7 @@ $scope.updatePassword = function(username,password) {
   if ( password.length > 0 ){ 
   $http.put("/api/ftp/password", { "ftpsite": $stateParams.siteId, username:username,password:password }, { headers : {'Content-Type' : 'application/json'} })
   .then(function(response) {
-          $scope.ftp_password = ''
+      $scope.getFTPSiteDetails()
       });
   }
 };
@@ -150,7 +135,7 @@ $scope.updatePassword = function(username,password) {
 
 
 
-  angular.module('BlurAdmin.pages.tables')
+  angular.module('BlurAdmin.pages.ftp')
   .controller('DomainCtrl', DomainCtrl);
 
 /** @ngInject */  
@@ -165,7 +150,6 @@ function DomainCtrl($rootScope, $scope, $http, $filter, $uibModal, localStorage,
       status: 3,
       group:  3
     };
-    console.log($scope.inserted)
     $rootScope.modalInstance.close('a');
     $http.post("/api/domain", $scope.inserted, { headers : {'Content-Type' : 'application/json'} })
     .then(function(response) {
@@ -176,7 +160,7 @@ function DomainCtrl($rootScope, $scope, $http, $filter, $uibModal, localStorage,
 }
 
 
-  angular.module('BlurAdmin.pages.tables')
+  angular.module('BlurAdmin.pages.ftp')
       .controller('TablesPageCtrl', TablesPageCtrl);
 
   /** @ngInject */  
@@ -192,8 +176,6 @@ function DomainCtrl($rootScope, $scope, $http, $filter, $uibModal, localStorage,
       params: UserData,
       headers : {'Accept' : 'application/json'}
      };
-
-    console.log(localStorage.getObject('dataUser')["username"])
 
     $rootScope.retrieveFTPDomains = $scope.retrieveFTPDomains = function () {
     $http.get("/api/domains",  config)
@@ -319,8 +301,6 @@ function DomainCtrl($rootScope, $scope, $http, $filter, $uibModal, localStorage,
     };
 
     $scope.removeFTPSite = function(ftpsite) {
-      //console.log(index)
-      //$scope.domains.splice(index, 1);
       $http.delete("/api/domain", {"params" : {"ftpsite":ftpsite} })
       .then(function(response) {
               $scope.retrieveFTPDomains()
@@ -346,7 +326,6 @@ function DomainCtrl($rootScope, $scope, $http, $filter, $uibModal, localStorage,
         group:  3
       };
       $scope.domains.push($scope.inserted);
-      //$uibModal.dismiss('close');
       $scope.myModal.dismiss();
     };
 
@@ -357,7 +336,6 @@ function DomainCtrl($rootScope, $scope, $http, $filter, $uibModal, localStorage,
     };
   
     $scope.saveDomain = function(name, data) {
-      // $scope.user already updated!
       $http.put("/api/domain", {"domain_name":name, "data": data}, { headers : {'Content-Type' : 'application/json'} })
       .then(function(response) {
           });

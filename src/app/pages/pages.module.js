@@ -15,8 +15,9 @@
 //      'BlurAdmin.pages.components',
 //      'BlurAdmin.pages.form',
       'BlurAdmin.pages.dns',
+      'BlurAdmin.pages.ftp',
       'BlurAdmin.pages.settings',
-      'BlurAdmin.pages.tables',
+
 //      'BlurAdmin.pages.charts',
 //      'BlurAdmin.pages.maps',
       'BlurAdmin.pages.profile',

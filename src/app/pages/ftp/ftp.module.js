@@ -5,7 +5,7 @@
 (function() {
   'use strict';
 
-  angular.module('BlurAdmin.pages.tables', [])
+  angular.module('BlurAdmin.pages.ftp', [])
     .config(routeConfig);
 
   /** @ngInject */
@@ -24,7 +24,7 @@
         authenticate: true
       }).state('main.ftp.list', {
         url: '/sites',
-        templateUrl: 'app/pages/tables/smart/tables.html',
+        templateUrl: 'app/pages/ftp/smart/tables.html',
         title: 'Sites',
         sidebarMeta: {
           order: 100,
@@ -32,7 +32,7 @@
         authenticate: true
       }).state('main.ftp.details', {
         url: '/details/:siteId>',
-        templateUrl: 'app/pages/tables/smart/details.html',
+        templateUrl: 'app/pages/ftp/smart/details.html',
         title: 'Users',
         controller: 'SiteDetailsCtrl',
         sidebarMeta: {
@@ -40,7 +40,7 @@
         },
         authenticate: true
       });
-    $urlRouterProvider.when('/main/tables', '/main/tables/basic');
+    $urlRouterProvider.when('/main/ftp', '/main/ftp/basic');
   }
 
 })();

@@ -53,7 +53,6 @@ function ZoneManagerCtrl($rootScope, $scope, $http, $filter, $uibModal, localSto
       $scope.setTypeSelected = function(type) {
         
           $scope.record_type = type
-          console.log('type is : ' + type )
           return(type)
       };
 
@@ -72,7 +71,6 @@ function ZoneDetailsCtrl($stateParams, $rootScope, $scope, $http, $filter, $uibM
     $http.get("/api/dns",  { "params": { "zone": zone } })
     .then(function(response) {
             $scope.zone = $stateParams.zoneId
-            console.log(response.data)
 
             $scope.zone_data = response.data['results']
             $scope.main_zone = response.data['results']['main_zone']
@@ -88,9 +86,6 @@ function ZoneDetailsCtrl($stateParams, $rootScope, $scope, $http, $filter, $uibM
             $scope.ns = response.data['results']['NS']
             $scope.ttl = response.data['results']['TTL']
             $scope.managed_zones = response.data['results']['managed_zones']
-            console.log("Managed Zones : ")
-            console.log($scope.managed_zones)
-            console.log(response.data['results']['managed_zones'])
         });    
       };
 
@@ -107,15 +102,13 @@ $scope.gotoselectzone= function() {
   $state.go('main.dns.zones'); 
 }
 $scope.storeTTL= function(ttl) {
-  console.log(ttl)
   $scope.old_ttl = ttl
 }
 
 $scope.updateTTL= function(ttl) {
-  console.log($scope.old_ttl )
-  console.log(ttl)
+
   if ( $scope.old_ttl  == ttl ){
-    console.log("Same value : nothing to change "  + ttl)
+
   }
   else{
     var data = {'type':'TTL','zone': $scope.zone, 'ttl':ttl }
@@ -123,7 +116,7 @@ $scope.updateTTL= function(ttl) {
     .then(function(response) {
       $scope.getZoneDetails($scope.zone)
     });
-    console.log("New value : updating TTL with value  "  + ttl)
+
   }
 }
 

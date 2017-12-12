@@ -1,9 +1,15 @@
 <uib-accordion>
-    <uib-accordion-group is-open="true" heading="Profile" panel-class="bootstrap-panel accordion-panel panel-default">
-        <p>My Profile Data</p>
+    <uib-accordion-group is-open="true" panel-class="bootstrap-panel accordion-panel panel-default">
+        <uib-accordion-heading>
+                    Profile  <i class="fa pull-right ion-ios-person"></i>
+        </uib-accordion-heading>
+        <p>Coming Soon</p>
     </uib-accordion-group>
-    <uib-accordion-group is-open="true" heading="SSH Keys" panel-class="bootstrap-panel accordion-panel panel-default">
-        <table  class="table table-bordered table-hover table-condensed">
+    <uib-accordion-group is-open="true" panel-class="bootstrap-panel accordion-panel panel-default">
+            <uib-accordion-heading>
+                    SSH Keys  <i class="fa pull-right ion-key"></i>
+            </uib-accordion-heading>
+            <table  class="table table-bordered table-hover table-condensed">
             <tr  class="editable-row" ng-repeat="user_id in settings" >
               <td  style="text-align:left;width:10%;">{{user_id.name}}</td>
               <td style="width:20%;text-align:left;">
@@ -22,11 +28,14 @@
                   </div>
                 </td>
             </tr>
-          </table>
+            </table>
           <br></br>
-          <button type="button" class="btn btn-primary btn-sm pull-right">Add Ssh Key</button>
+          <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="open('app/pages/ui/modals/modalTemplates/addSSHKey.html')" >Add Ssh Key</button>
     </uib-accordion-group>
-    <uib-accordion-group heading="DNS" panel-class="bootstrap-panel accordion-panel panel-default">
+    <uib-accordion-group panel-class="bootstrap-panel accordion-panel panel-default">
+            <uib-accordion-heading>
+                    DNS  <i class="fa pull-right ion-ios-world"></i>
+            </uib-accordion-heading>
       <table  class="table table-hover table-condensed">
             <tr  class="editable-row"  >
                     <td style="width:20%;text-align:left;">
@@ -103,14 +112,24 @@
       </table>
 
     </uib-accordion-group>
-    <uib-accordion-group heading="FTP Service Parameters" panel-class="bootstrap-panel accordion-panel panel-default">
-      Hello
-    </uib-accordion-group>
-    <uib-accordion-group panel-class="bootstrap-panel accordion-panel panel-default">
-      <uib-accordion-heading>
-        I can have markup, too! <i class="fa pull-right ion-settings"></i>
-      </uib-accordion-heading>
-      This is just some content to illustrate fancy headings.
+    <uib-accordion-group  panel-class="bootstrap-panel accordion-panel panel-default">
+        <uib-accordion-heading>
+                    FTP  <i class="fa pull-right ion-ios-folder"></i>
+        </uib-accordion-heading>
+        <table  class="table table-hover table-condensed">
+            <tr  class="editable-row"  >
+                <td style="width:20%;text-align:left;">
+                    <a  href="#"   >
+                        SSH Key Name
+                    </a>  
+                </td>
+                <td >
+                    <a  href="#"  editable-text="ftp_settings.ssh_key_name" onaftersave="setFTPSettings('ssh', ftp_settings.ssh_key_name)" >
+                        {{ ftp_settings.ssh_key_name || 'No Key Defined' }}
+                    </a>        
+                </td>
+              </tr>
+          </table>
     </uib-accordion-group>
 </uib-accordion>
 
