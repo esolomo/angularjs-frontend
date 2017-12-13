@@ -65,6 +65,15 @@ function AddingSSHKeyCtrl($rootScope, $scope, $http, $filter, $uibModal, localSt
           });
     };
 
+    $scope.setFTPSettings = function(type, name) {
+      
+            $http.post("/api/settings/ftp", {'type':type, 'value':name}, { headers : {'Content-Type' : 'application/json'} })
+            .then(function(response) {
+                 $scope.open('app/pages/ui/modals/modalTemplates/SettingsUpdate.html')
+                 $scope.getFTPSettings()
+              });
+          };
+
      $rootScope.getDNSSettings = $scope.getDNSSettings = function () {
       $http.get("/api/settings/dns",  {"params": {} })
       .then(function(response) {
